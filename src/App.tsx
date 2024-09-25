@@ -1,9 +1,206 @@
-import "./App.css";
+import { useEffect, useState } from "react";
+import RadioBox from "./components/RadioBox";
+import RenderCalculator from "./pages/RenderCalculator";
+import InfoIcon from "./components/InfoIcon";
+import { Tooltip } from "react-tooltip";
 
 function App() {
+  const [roomType, setRoomType] = useState<string>("singleWall");
+  const [length, setLength] = useState<string>("0.00");
+  const [height, setHeight] = useState<string>("0.00");
+  const [width, setWidth] = useState<string>("0.00");
+  const [doors, setDoors] = useState<number[]>([0]);
+  const [windows, setWindows] = useState<number[]>([0]);
+  const [area, setArea] = useState<string>("0.00");
+  const [amountOfPrimer, setAmountOfPrimer] = useState<number>(0);
+  const [amountOfPaint, setAmountOfPaint] = useState<number>(0);
+
+  const handleRoomTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRoomType(e.target.value);
+  };
+
+  // standard window, door sizes
+  const WINDOWS_WIDTH = 0.5;
+  const WINDOWS_LENGTH = 1.2;
+  const WINDOWS_AREA = WINDOWS_WIDTH * WINDOWS_LENGTH;
+  const DOORS_WIDTH = 0.8;
+  const DOORS_LENGTH = 2.0;
+  const DOORS_AREA = DOORS_WIDTH * DOORS_LENGTH;
+
+  const NUMBER_OF_TIMES_FOR_PRIMER = 2;
+  const AREA_ONE_GALLON_OF_PRIMER_CAN_COVER = 40; // m^2
+  const NUMBER_OF_TIMES_FOR_PAINT = 2;
+  const AREA_ONE_GALLON_OF_PAINT_CAN_COVER = 40; // m^2
+  const BUFFER = 0.15; //15% buffer
+
+  // calculate total area for whole room
+  useEffect(() => {
+    let Rarea;
+    if (roomType === "wholeRoom") {
+      Rarea = (
+        parseFloat(width) * parseFloat(height) * 2 +
+        parseFloat(length) * parseFloat(height) * 2
+      ).toFixed(2);
+
+      Rarea = (
+        parseFloat(Rarea) -
+        DOORS_AREA * doors[0] -
+        WINDOWS_AREA * windows[0]
+      ).toFixed(2);
+    } else {
+      // single wall
+      Rarea = (parseFloat(length) * parseFloat(height)).toFixed(2);
+
+      Rarea = (
+        parseFloat(Rarea) -
+        DOORS_AREA * doors[0] -
+        WINDOWS_AREA * windows[0]
+      ).toFixed(2);
+    }
+
+    // primer
+    let primerAmt = (
+      (parseFloat(Rarea) / AREA_ONE_GALLON_OF_PRIMER_CAN_COVER) *
+      NUMBER_OF_TIMES_FOR_PRIMER
+    ).toFixed(2);
+    primerAmt = Math.ceil(parseFloat(primerAmt) * (1 + BUFFER)).toFixed(2);
+
+    // paint
+    let paintAmt = (
+      (parseFloat(Rarea) / AREA_ONE_GALLON_OF_PAINT_CAN_COVER) *
+      NUMBER_OF_TIMES_FOR_PAINT
+    ).toFixed(2);
+
+    paintAmt = Math.ceil(parseFloat(paintAmt) * (1 + BUFFER)).toFixed(2);
+
+    setArea(Rarea);
+    setAmountOfPrimer(Math.ceil(parseFloat(primerAmt)));
+    setAmountOfPaint(Math.ceil(parseFloat(paintAmt)));
+  }, [
+    length,
+    height,
+    width,
+    roomType,
+    doors,
+    windows,
+    DOORS_AREA,
+    WINDOWS_AREA,
+    area,
+  ]);
+
   return (
     <>
-      <h1>Hey, this is the paint calculator</h1>
+      <div className=" min-h-screen w-full flex flex-col items-center justify-center font-noto-thai px-60 py-10">
+        <div className=" px-10  w-full">
+          <h1 className="text-[#013149] text-[55px] text-center athiti-regular">
+            How much paint do I need?
+          </h1>
+          <div className="mt-8">
+            <h3 className="text-xl text-[#000]">I'm painting a...</h3>
+            <div className="mt-3 flex gap-x-6 items-center">
+              <div className="flex items-center gap-x-2">
+                <RadioBox
+                  name="roomType"
+                  id="singleWall"
+                  label="Single wall"
+                  checked={roomType === "singleWall"}
+                  onChange={handleRoomTypeChange}
+                  value="singleWall"
+                />
+              </div>
+              <div className="flex items-center gap-x-2">
+                <RadioBox
+                  name="roomType"
+                  id="wholeRoom"
+                  label="Whole Room"
+                  checked={roomType === "wholeRoom"}
+                  onChange={handleRoomTypeChange}
+                  value="wholeRoom"
+                />
+              </div>
+            </div>
+            <div className="mt-4">
+              <RenderCalculator
+                width={width}
+                setWidth={setWidth}
+                selectedType={roomType}
+                length={length}
+                setLength={setLength}
+                height={height}
+                setHeight={setHeight}
+                doors={doors}
+                setDoors={setDoors}
+                windows={windows}
+                setWindows={setWindows}
+              />
+              {/* {roomType === "singleWall" ? (
+                <SingleWall
+                  selectedType={roomType}
+                  length={length}
+                  setLength={setLength}
+                  height={height}
+                  setHeight={setHeight}
+                  doors={doors}
+                  setDoors={setDoors}
+                  windows={windows}
+                  setWindows={setWindows}
+                />
+              ) : (
+                <WholeRoom />
+              )} */}
+            </div>
+            <div className="mt-10 bg-[#f5f9fa] text-[#013149] w-full min-h-[200px] flex flex-col justify-between gap-y-5 p-5">
+              <div className="flex flex-col gap-y-2">
+                <div className="flex gap-x-2 items-center">
+                  <span className="text-base">Your wall area...</span>
+                  <a className="walls-tooltip">
+                    <InfoIcon className="w-4 h-4 mt-[1px]" />
+                  </a>
+                  <Tooltip anchorSelect=".walls-tooltip" place="right">
+                    <p>
+                      The total area of walls to paint, with windows and doors
+                      removed
+                    </p>
+                  </Tooltip>
+                </div>
+                <h1 className="text-3xl font-[500]">
+                  {area} m<sup>2</sup>
+                </h1>
+              </div>
+              <div className="flex flex-col gap-y-2">
+                <div className="flex gap-x-2 items-center">
+                  <span className="text-base">
+                    For two coats, you'll need...
+                  </span>
+                  <a className="paint-tooltip">
+                    <InfoIcon className="w-4 h-4 mt-[1px]" />
+                  </a>
+                  <Tooltip anchorSelect=".paint-tooltip" place="right">
+                    <p>Enough for two coats, with +10% allowance included</p>
+                  </Tooltip>
+                </div>
+                <h1 className="text-3xl font-[500]">
+                  {amountOfPrimer} gallons of Primer
+                </h1>
+                <h1 className="text-3xl font-[500]">
+                  {amountOfPaint} gallons of Paint
+                </h1>
+              </div>
+            </div>
+            <div className="mt-4 px-3">
+              <h1 className="text-xl font-[500]">Heads up</h1>
+              <p className="mt-2 text-sm">
+                This calculator is helpful, but just a guide. It’s accurate but
+                some of your specific measurements (like windows or doors) might
+                affect the results a bit. Happily, we offer super fast delivery
+                if you fall short - and returns if you over-egg it. Get in touch
+                if you’d like some more help from our friendly team: [email
+                here]
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
