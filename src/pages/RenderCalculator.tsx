@@ -34,7 +34,7 @@ const RenderCalculator: React.FC<Props> = ({
     <div className=" mt-8">
       <div className="flex flex-col gap-y-7">
         <div className="flex flex-col gap-y-3">
-          <h1 className="text-xl">ความยาว L</h1>
+          <h1 className="text-xl">ความยาว</h1>
           <div className="flex gap-x-3 w-full">
             <NumericInput value={length} setValue={setLength} />
             <span className="text-gray-500 mt-0.5 text-lg font-[500]">m</span>
@@ -42,7 +42,7 @@ const RenderCalculator: React.FC<Props> = ({
         </div>
         {selectedType !== "wholeRoomWithCel" && (
           <div className="flex flex-col gap-y-3">
-            <h1 className="text-xl">ความสูง H</h1>
+            <h1 className="text-xl">ความสูง</h1>
             <div className="flex gap-x-3 w-full">
               <NumericInput value={height} setValue={setHeight} />
               <span className="text-gray-500 mt-0.5 text-lg font-[500]">m</span>
@@ -51,7 +51,7 @@ const RenderCalculator: React.FC<Props> = ({
         )}
         {(selectedType === "wholeRoom" || selectedType==='wholeRoomWithCel') && (
           <div className="flex flex-col gap-y-3">
-            <h1 className="text-xl">ความกว้าง W</h1>
+            <h1 className="text-xl">ความกว้าง</h1>
             <div className="flex gap-x-3 w-full">
               <NumericInput value={width} setValue={setWidth} />
               <span className="text-gray-500 mt-0.5 text-lg font-[500]">m</span>
