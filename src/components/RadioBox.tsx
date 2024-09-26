@@ -23,7 +23,7 @@ const RadioBox: React.FC<Props> = (props) => {
       />
       <label
         htmlFor={id}
-        className="ml-3 cursor-pointer text-md font-[500] leading-relaxed "
+        className="ml-3 cursor-pointer sm:text-md text-sm font-[500] leading-relaxed "
       >
         {label}
       </label>

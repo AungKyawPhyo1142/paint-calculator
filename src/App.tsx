@@ -100,15 +100,15 @@ function App() {
 
   return (
     <>
-      <div className=" min-h-screen w-full flex flex-col items-center justify-center font-noto-thai px-60 py-10">
+      <div className=" min-h-screen w-full flex flex-col items-center justify-center font-noto-thai px-5 py-10 md:px-60 sm:px-3">
         <div className=" px-10  w-full">
-          <h1 className="text-[#013149] text-[55px] text-center athiti-regular">
+          <h1 className="text-[#013149] sm:text-[55px] text-[25px] text-center athiti-regular">
             ต้องใช้สีเท่าไหร่ดี?
           </h1>
           <div className="mt-8">
-            <h3 className="text-xl text-[#000]">กำลังทาสี...</h3>
-            <div className="mt-3 flex gap-x-6 items-center">
-              <div className="flex items-center gap-x-2">
+            <h3 className="sm:text-xl text-base text-[#000]">กำลังทาสี...</h3>
+            <div className="mt-3 flex gap-x-6 sm:items-center sm:flex-row flex-col items-start">
+              <div className="flex  items-center gap-x-2 ">
                 <RadioBox
                   name="roomType"
                   id="singleWall"
@@ -162,7 +162,7 @@ function App() {
                     <InfoIcon className="w-4 h-4 " />
                   </a>
                   <Tooltip anchorSelect=".walls-tooltip" place="right">
-                    <p>
+                    <p className="sm:text-base text-xs">
                       The total area of walls to paint, with windows and doors
                       removed
                     </p>
@@ -181,17 +181,19 @@ function App() {
                     <InfoIcon className="w-4 h-4 " />
                   </a>
                   <Tooltip anchorSelect=".paint-tooltip" place="right">
-                    <p>Enough for two coats, with +10% allowance included</p>
+                    <p className="sm:text-base text-xs">
+                      Enough for two coats, with +10% allowance included
+                    </p>
                   </Tooltip>
                 </div>
-                <h1 className="text-3xl font-[500]">
+                <h1 className="text-lg sm:text-3xl font-[500]">
                   สีรองพื้น {amountOfPrimer} แกลลอน
                 </h1>
-                <h1 className="text-3xl font-[500]">
+                <h1 className="text-lg sm:text-3xl font-[500]">
                   สีทับหน้า {amountOfPaint} แกลลอน
                 </h1>
                 {roomType === "wholeRoomWithCel" && (
-                  <h1 className="text-3xl font-[500]">
+                  <h1 className="text-lg sm:text-3xl font-[500]">
                     สีทาเพดาน {amountOfCeilingPaint} แกลลอน
                   </h1>
                 )}

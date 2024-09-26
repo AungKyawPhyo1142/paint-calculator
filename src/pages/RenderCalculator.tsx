@@ -34,7 +34,7 @@ const RenderCalculator: React.FC<Props> = ({
     <div className=" mt-8">
       <div className="flex flex-col gap-y-7">
         <div className="flex flex-col gap-y-3">
-          <h1 className="text-xl">ความยาว</h1>
+          <h1 className="text-base sm:text-xl">ความยาว</h1>
           <div className="flex gap-x-3 w-full">
             <NumericInput value={length} setValue={setLength} />
             <span className="text-gray-500 mt-0.5 text-lg font-[500]">m</span>
@@ -42,16 +42,17 @@ const RenderCalculator: React.FC<Props> = ({
         </div>
         {selectedType !== "wholeRoomWithCel" && (
           <div className="flex flex-col gap-y-3">
-            <h1 className="text-xl">ความสูง</h1>
+            <h1 className="text-base sm:text-xl">ความสูง</h1>
             <div className="flex gap-x-3 w-full">
               <NumericInput value={height} setValue={setHeight} />
               <span className="text-gray-500 mt-0.5 text-lg font-[500]">m</span>
             </div>
           </div>
         )}
-        {(selectedType === "wholeRoom" || selectedType==='wholeRoomWithCel') && (
+        {(selectedType === "wholeRoom" ||
+          selectedType === "wholeRoomWithCel") && (
           <div className="flex flex-col gap-y-3">
-            <h1 className="text-xl">ความกว้าง</h1>
+            <h1 className="text-base sm:text-xl">ความกว้าง</h1>
             <div className="flex gap-x-3 w-full">
               <NumericInput value={width} setValue={setWidth} />
               <span className="text-gray-500 mt-0.5 text-lg font-[500]">m</span>
@@ -68,7 +69,9 @@ const RenderCalculator: React.FC<Props> = ({
                 </a>
               </div>
               <Tooltip anchorSelect=".doors-tooltip" place="right">
-                <p>ประตูมาตรฐานมีขนาดประมาณ 1.6 ตารางเมตร</p>
+                <p className="sm:text-base text-sm">
+                  ประตูมาตรฐานมีขนาดประมาณ 1.6 ตารางเมตร
+                </p>
               </Tooltip>
               <RangeSlider values={doors} setValues={setDoors} />
             </div>
@@ -80,7 +83,9 @@ const RenderCalculator: React.FC<Props> = ({
                 </a>
               </div>
               <Tooltip anchorSelect=".windows-tooltip" place="right">
-                <p>หน้าต่างมาตรฐานมีขนาดประมาณ 0.6 ตารางเมตร</p>
+                <p className="sm:text-base text-sm">
+                  หน้าต่างมาตรฐานมีขนาดประมาณ 0.6 ตารางเมตร
+                </p>
               </Tooltip>
               <RangeSlider values={windows} setValues={setWindows} />
             </div>
