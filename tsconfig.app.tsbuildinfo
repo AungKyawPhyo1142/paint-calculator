@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts"],"version":"5.6.2"}
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/infoicon.tsx","./src/components/numericinput.tsx","./src/components/radiobox.tsx","./src/components/rangeslider.tsx","./src/pages/rendercalculator.tsx"],"version":"5.6.2"}
